@@ -1,0 +1,7 @@
+#!/bin/bash
+
+WORKING_DIR=$PWD
+
+cd .. && mkdir idea_box_exercise && cd idea_box_exercise
+mkdir -p lib/javascripts \
+         lib/css
