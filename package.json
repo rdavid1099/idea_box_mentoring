@@ -1,0 +1,21 @@
+{
+  "name": "homepage",
+  "version": "0.0.1",
+  "description": "IdeaBox using jquery for mentoring Turing FEE",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "http": "0.0.0",
+    "jquery": "^3.2.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ryan Workman",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rdavid1099/idea_box_mentoring"
+  },
+  "homepage": "https://github.com/rdavid1099/idea_box_mentoring"
+}
