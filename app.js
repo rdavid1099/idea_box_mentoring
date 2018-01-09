@@ -1,13 +1,17 @@
-var express = require('express');
-var http = require('http');
-var app = express();
-var port = 2020;
+var path = require("path"),
+    express = require("express");
 
-app.use(express.static('lib/'));
+var DIST_DIR = path.join(__dirname, "dist"),
+    port = 2020,
+    app = express();
 
-app.get('/', function(req,res){
-  res.send('/index.html');
-});
+//Serving the files on the dist folder
+app.use(express.static(DIST_DIR));
+
+//Send index.html when the user access the web
+app.get("*", function (req, res) {
+  res.sendFile(path.join(DIST_DIR, "index.html"));
+})
 
 app.listen(port, function(){
   console.log('IdeaBox application starting up on http://localhost:' + port);
