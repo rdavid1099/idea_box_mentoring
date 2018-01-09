@@ -9,6 +9,9 @@ if [[ -d "idea_box_exercise" ]]; then
   echo "Terminating process."
   exit 1
 fi
+
+echo "Generating directories and files at ${PWD}/idea_box_exercise"
+
 mkdir idea_box_exercise && cd idea_box_exercise
 mkdir -p src/javascripts \
          src/css
@@ -21,3 +24,14 @@ printf "%s\n" "var path = require(\"path\")," "    express = require(\"express\"
 printf "%s\n" "{" "  \"name\": \"IdeaBox\"," "  \"version\": \"0.0.1\"," "  \"description\": \"IdeaBox using jquery for mentoring Turing FEE\"," "  \"main\": \"main.js\"," "  \"dependencies\": {" "    \"express\": \"^4.14.0\"," "    \"jquery\": \"^3.2.1\"" "  }," "  \"scripts\": {" "    \"start\": \"node app.js\"," "    \"build\": \"./node_modules/webpack/bin/webpack.js && cp ./src/index.html ./dist && cp -r ./src/css ./dist && npm start\"" "  }," "  \"author\": \"\"," "  \"license\": \"ISC\"," "  \"repository\": {" "    \"type\": \"git\"," "    \"url\": \"git+https://github.com/rdavid1099/idea_box_mentoring\"" "  }," "  \"homepage\": \"https://github.com/rdavid1099/idea_box_mentoring\"," "  \"devDependencies\": {" "    \"webpack\": \"^3.10.0\"" "  }" "}" > package.json
 printf "%s\n" "# IdeaBox Exercise" "## Created by Ryan Workman for Mentoring Turing Students" "Clone down this repo and run \`npm install && npm run build\` to launch the application." > README.md
 printf "%s\n" "var path = require('path');" "" "var DIST_DIR   = path.join(__dirname, \"dist\")," "    CLIENT_DIR = path.join(__dirname, \"src\");" "" "module.exports = {" "  context: CLIENT_DIR," "  entry: \"./javascripts/main\"," "  output: {" "    path: DIST_DIR," "    filename: \"bundle.js\"" "  }," "  resolve: {" "    extensions: ['.js']" "  }" "}" > webpack.config.js
+
+echo "Installing NPM Dependencies"
+npm install > /dev/null
+
+echo "Initializing Git Repository"
+git init
+git add .
+git commit -m "Initial Commit"
+
+echo "$PWD Successfully Created"
+echo "Run \`cd ../idea_box_exercise\` to get started!"
