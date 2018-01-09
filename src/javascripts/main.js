@@ -26,8 +26,16 @@ $(document).ready(() => {
 
   getHeadline = () => { return `<h2 style="text-align: center;">Welcome to IdeaBox, ${scope.username}</h2>`}
 
+  getIdeaForm = () => {
+    return '<div class="row">' +
+        '<div class="col-md-3"></div>' +
+        `<div class="col-md-6 well">${scope.loggedIn ? ideaForm : authorizeNeeded}</div>` +
+        '<div class="col-md-3"></div>' +
+      '</div>'
+  }
+
   getList = () => {
-    let listHtml = '<div class="row">' +
+    return '<div class="row">' +
       '<div class="col-md-2"></div>' +
       '<div class="col-md-8">' +
         `<h5 style="text-align: center;">Total Ideas in List: ${scope.ideas.length}</h5>` +
@@ -35,7 +43,6 @@ $(document).ready(() => {
       '</div>' +
       '<div class="col-md-2"></div>' +
     '</div>'
-    return listHtml
   }
 
   getIdeasHtml = () => {
@@ -58,26 +65,35 @@ $(document).ready(() => {
     return result
   }
 
-  authorizeNeeded = () => {
-    return '<div class="row">' +
-      '<div class="col-md-3"></div>' +
-      '<div class="col-md-6 well">' +
-        '<h5 style="text-align: center;">You must login to create ideas</h5>'
-      '</div>' +
-      '<div class="col-md-3"></div>' +
-    '</div>'
-  }
+  const loginForm = '<div class="row">' +
+                      '<div class="col-md-3"></div>' +
+                      '<div class="col-md-6 well">' +
+                        '<form>' +
+                          '<div class="form-group">' +
+                            '<label for="username">Username</label>' +
+                            '<input type="text" class="form-control" id="username" placeholder="Username">' +
+                          '</div>' +
+                          '<center><div class="btn-group" role="group">' +
+                            '<a href="#" type="button" class="btn btn-primary" id="authorize">Login</a>' +
+                            '<a href="#" type="button" class="btn btn-danger" id="cancel-login">Cancel</a>' +
+                          '</div></center>' +
+                        '</form>' +
+                      '</div>' +
+                      '<div class="col-md-3"></div>' +
+                    '</div>',
+        ideaForm = '',
+        authorizeNeeded = '<h5 style="text-align: center;">You must login to create ideas</h5>'
 
   $nav.html(getNav())
   $headline.html(getHeadline())
-  $ideaForm.html(authorizeNeeded())
+  $ideaForm.html(getIdeaForm())
   $ideaList.html(getList())
 
   $('#login').on('click', (e) => {
-    $ideaForm.html()
-    // scope.username = scope.loggedIn ? 'Guest' : 'Tester'
-    // scope.loggedIn = !scope.loggedIn
-    // e.target.innerHTML = scope.loggedIn ? `Logout, ${scope.username}` : 'Login'
-    // $headline.html(getHeadline())
+    $ideaForm.html(loginForm)
+  })
+
+  $(document).on('click', '#authorize', (e) => {
+
   })
 })
