@@ -5,9 +5,6 @@ let scope = {
   idea_num: 0
 }
 
-// Insert your code here to complete the necessary features for IdeaBox
-
-// EXAMPLE:
-// $('#test').on('click', () => {
-//   console.log('Hello World')
-// })
+$(document).ready(() => {
+  $('#nav').html("<h1>IdeaBox</h1>")
+})
