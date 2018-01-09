@@ -53,16 +53,28 @@ $(document).ready(() => {
                       '<a href="#" type="button" class="btn btn-primary edit">Edit</a>' +
                       '<a href="#" type="button" class="btn btn-danger delete">Delete</a>' +
                     '</div>' +
-                  '</div>'
+                  '</div>',
+        ideas = scope.ideas.slice().reverse()
 
-    for (var i = 0; i < scope.ideas.length; i++) {
+    for (var i = 0; i < ideas.length; i++) {
       result += '<div class="panel panel-primary">' +
-        `<div class="panel-heading"><h3 class="panel-title">${scope.ideas[i].title}</h3></div>` +
-        `<div class="panel-body">${scope.ideas[i].description}</div>` +
+        `<div class="panel-heading"><h3 class="panel-title">${ideas[i].title}</h3></div>` +
+        `<div class="panel-body">${ideas[i].description}</div>` +
         `${scope.loggedIn ? buttons : ''}` +
       '</div>'
     }
     return result
+  }
+
+  const createIdea = (cb) => {
+    let title   = $('#idea-title')[0].value,
+        descrip = $('#idea-descrip')[0].value
+    if (title && descrip) {
+      let newIdea = {title: title,
+                     description: descrip}
+      scope.ideas.push(newIdea)
+    }
+    cb()
   }
 
   const refreshDom = () => {
@@ -73,8 +85,11 @@ $(document).ready(() => {
   }
 
   const setUsername = (cb) => {
-    scope.loggedIn = true
-    scope.username = $('#username')[0].value
+    let username = $('#username')[0].value
+    if (username) {
+      scope.loggedIn = true
+      scope.username = username
+    }
     cb()
   }
 
@@ -100,7 +115,20 @@ $(document).ready(() => {
                       '</div>' +
                       '<div class="col-md-3"></div>' +
                     '</div>',
-        ideaForm = '',
+        ideaForm = '<form>' +
+                    '<div class="form-group">' +
+                      '<label for="idea-title">Title</label>' +
+                      '<input type="text" class="form-control" id="idea-title" placeholder="Title">' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                      '<label for="idea-descrip">Description</label>' +
+                      '<textarea rows="4" class="form-control" id="idea-descrip" placeholder="Description"></textarea>' +
+                    '</div>' +
+                    '<center><div class="btn-group" role="group">' +
+                      '<a href="#" type="button" class="btn btn-primary" id="save-idea">Save</a>' +
+                      '<a href="#" type="button" class="btn btn-danger" id="clear-idea">Clear</a>' +
+                    '</div></center>' +
+                  '</form>',
         authorizeNeeded = '<h5 style="text-align: center;">You must login to create ideas</h5>'
 
   refreshDom()
@@ -108,6 +136,10 @@ $(document).ready(() => {
   $(document).on('click', '#login', (e) => {
     scope.loggedIn ? logout(refreshDom) : $ideaForm.html(loginForm)
   })
+
+  $(document).on('click', '#save-idea', (e) => { createIdea(refreshDom) })
+
+  $(document).on('click', '#clear-idea', (e) => { refreshDom() })
 
   $(document).on('click', '#authorize', (e) => { setUsername(refreshDom) })
 
