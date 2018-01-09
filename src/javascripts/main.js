@@ -13,7 +13,7 @@ $(document).ready(() => {
     ideas: [{title: 'Testing1', description: 'Testing ideas'}]
   }
 
-  getNav = () => {
+  const getNav = () => {
     return '<nav class="navbar navbar-default">' +
       '<div class="container-fluid">' +
         '<div class="navbar-header"><span class="navbar-brand">IdeaBox</span></div>' +
@@ -24,9 +24,9 @@ $(document).ready(() => {
     '</nav>'
   }
 
-  getHeadline = () => { return `<h2 style="text-align: center;">Welcome to IdeaBox, ${scope.username}</h2>`}
+  const getHeadline = () => { return `<h2 style="text-align: center;">Welcome to IdeaBox, ${scope.username}</h2>`}
 
-  getIdeaForm = () => {
+  const getIdeaForm = () => {
     return '<div class="row">' +
         '<div class="col-md-3"></div>' +
         `<div class="col-md-6 well">${scope.loggedIn ? ideaForm : authorizeNeeded}</div>` +
@@ -34,7 +34,7 @@ $(document).ready(() => {
       '</div>'
   }
 
-  getList = () => {
+  const getList = () => {
     return '<div class="row">' +
       '<div class="col-md-2"></div>' +
       '<div class="col-md-8">' +
@@ -45,7 +45,7 @@ $(document).ready(() => {
     '</div>'
   }
 
-  getIdeasHtml = () => {
+  const getIdeasHtml = () => {
     if (scope.ideas.length === 0) { return '' }
     let result  = '',
         buttons = '<div class="panel-footer">' +
@@ -63,6 +63,25 @@ $(document).ready(() => {
       '</div>'
     }
     return result
+  }
+
+  const refreshDom = () => {
+    $nav.html(getNav())
+    $headline.html(getHeadline())
+    $ideaForm.html(getIdeaForm())
+    $ideaList.html(getList())
+  }
+
+  const setUsername = (cb) => {
+    scope.loggedIn = true
+    scope.username = $('#username')[0].value
+    cb()
+  }
+
+  const logout = (cb) => {
+    scope.loggedIn = false
+    scope.username = 'Guest'
+    cb()
   }
 
   const loginForm = '<div class="row">' +
@@ -84,16 +103,13 @@ $(document).ready(() => {
         ideaForm = '',
         authorizeNeeded = '<h5 style="text-align: center;">You must login to create ideas</h5>'
 
-  $nav.html(getNav())
-  $headline.html(getHeadline())
-  $ideaForm.html(getIdeaForm())
-  $ideaList.html(getList())
+  refreshDom()
 
-  $('#login').on('click', (e) => {
-    $ideaForm.html(loginForm)
+  $(document).on('click', '#login', (e) => {
+    scope.loggedIn ? logout(refreshDom) : $ideaForm.html(loginForm)
   })
 
-  $(document).on('click', '#authorize', (e) => {
+  $(document).on('click', '#authorize', (e) => { setUsername(refreshDom) })
 
-  })
+  $(document).on('click', '#cancel-login', (e) => { $ideaForm.html(getIdeaForm()) })
 })
