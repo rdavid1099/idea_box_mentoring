@@ -7,9 +7,8 @@ $(document).ready(() => {
         $ideaList = $('#idea-list')
 
   let scope = {
-    username: 'Guest',
-    idea_num: 0,
-    loggedIn: false,
+    username: 'Ryan',
+    loggedIn: true,
     ideas: [{title: 'Testing1', description: 'Testing ideas'}]
   }
 
@@ -34,6 +33,29 @@ $(document).ready(() => {
       '</div>'
   }
 
+  const editForm = (id) => {
+    let $idea = $(`#${id}`)
+    $idea.html(getEditHtml($idea[0], id))
+  }
+
+  const getEditHtml = ($idea, id) => {
+    let ideaID = id.split("-")[1]
+    return '<form>' +
+      '<div class="form-group">' +
+        '<label for="idea-title">Title</label>' +
+        `<input type="text" class="form-control" id="idea-title-${ideaID}" placeholder="Title" value="${$idea.children[0].innerText}">` +
+      '</div>' +
+      '<div class="form-group">' +
+        '<label for="idea-descrip">Description</label>' +
+        `<textarea rows="4" class="form-control" id="idea-descrip-${ideaID}" placeholder="Description">${$idea.children[1].innerText}</textarea>` +
+      '</div>' +
+      '<center><div class="btn-group" role="group">' +
+        `<a href="#" type="button" class="btn btn-primary update-idea" id="${ideaID}">Edit</a>` +
+        '<a href="#" type="button" class="btn btn-danger" id="clear-idea">Cancel</a>' +
+      '</div></center>' +
+    '</form>'
+  }
+
   const getList = () => {
     return '<div class="row">' +
       '<div class="col-md-2"></div>' +
@@ -48,7 +70,7 @@ $(document).ready(() => {
   const getIdeasHtml = () => {
     if (scope.ideas.length === 0) { return '' }
     let result  = '',
-        buttons = '<div class="panel-footer">' +
+        buttons = '<div class="panel-footer" style="text-align: center;">' +
                     '<div class="btn-group" role="group">' +
                       '<a href="#" type="button" class="btn btn-primary edit">Edit</a>' +
                       '<a href="#" type="button" class="btn btn-danger delete">Delete</a>' +
@@ -57,7 +79,7 @@ $(document).ready(() => {
         ideas = scope.ideas.slice().reverse()
 
     for (var i = 0; i < ideas.length; i++) {
-      result += '<div class="panel panel-primary">' +
+      result += `<div class="panel panel-primary" id="idea-${i}">` +
         `<div class="panel-heading"><h3 class="panel-title">${ideas[i].title}</h3></div>` +
         `<div class="panel-body">${ideas[i].description}</div>` +
         `${scope.loggedIn ? buttons : ''}` +
@@ -74,6 +96,12 @@ $(document).ready(() => {
                      description: descrip}
       scope.ideas.push(newIdea)
     }
+    cb()
+  }
+
+  const updateIdea = (id, cb) => {
+    scope.ideas[id].title = $(`#idea-title-${id}`)[0].value,
+    scope.ideas[id].description = $(`#idea-descrip-${id}`)[0].value
     cb()
   }
 
@@ -135,6 +163,20 @@ $(document).ready(() => {
 
   $(document).on('click', '#login', (e) => {
     scope.loggedIn ? logout(refreshDom) : $ideaForm.html(loginForm)
+  })
+
+  $(document).on('click', '.edit', (e) => {
+    let ideaID = e.target.offsetParent.parentElement.parentElement.id;
+    editForm(ideaID)
+  })
+
+  $(document).on('click', '.update-idea', (e) => {
+    updateIdea(e.target.id, refreshDom)
+  })
+
+  $(document).on('click', '.delete', (e) => {
+    console.log("DELETE")
+    console.log(e)
   })
 
   $(document).on('click', '#save-idea', (e) => { createIdea(refreshDom) })
