@@ -11,7 +11,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js",
-    "build": "./node_modules/webpack/bin/webpack.js && cp ./src/index.html ./dist && cp -r ./src/css ./dist && npm start"
+    "build": "./node_modules/webpack/bin/webpack.js --watch",
+    "copy": "cp ./src/index.html ./dist && cp -r ./src/css ./dist  && npm start"
   },
   "author": "Ryan Workman",
   "license": "ISC",
@@ -21,6 +22,8 @@
   },
   "homepage": "https://github.com/rdavid1099/idea_box_mentoring",
   "devDependencies": {
-    "webpack": "^3.10.0"
+    "glob": "^7.1.2",
+    "webpack": "^3.10.0",
+    "webpack-shell-plugin": "^0.5.0"
   }
 }
