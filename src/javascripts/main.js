@@ -7,9 +7,9 @@ $(document).ready(() => {
         $ideaList = $('#idea-list')
 
   let scope = {
-    username: 'Ryan',
-    loggedIn: true,
-    ideas: [{title: 'Testing1', description: 'Testing ideas'}]
+    username: 'Guest',
+    loggedIn: false,
+    ideas: []
   }
 
   const getNav = () => {
@@ -105,6 +105,11 @@ $(document).ready(() => {
     cb()
   }
 
+  const destroyIdea = (id, cb) => {
+    scope.ideas.splice(id, 1)
+    cb()
+  }
+
   const refreshDom = () => {
     $nav.html(getNav())
     $headline.html(getHeadline())
@@ -175,8 +180,8 @@ $(document).ready(() => {
   })
 
   $(document).on('click', '.delete', (e) => {
-    console.log("DELETE")
-    console.log(e)
+    let ideaID = e.target.offsetParent.parentElement.parentElement.id;
+    destroyIdea(ideaID.split('-')[1], refreshDom)
   })
 
   $(document).on('click', '#save-idea', (e) => { createIdea(refreshDom) })
